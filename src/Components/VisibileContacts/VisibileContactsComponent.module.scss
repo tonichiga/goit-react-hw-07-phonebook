@@ -1,0 +1,23 @@
+.contactElement {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  border: solid 1px;
+  width: 300px;
+  border-radius: 5px;
+  padding: 0 20px 0 20px;
+  margin-bottom: 20px;
+}
+.contactName {
+  display: block;
+}
+.contactButton {
+  height: 20px;
+  border-radius: 5px;
+  background-color: rgb(0, 209, 164);
+  cursor: pointer;
+}
+.contactWrapper {
+  text-align: left;
+}
