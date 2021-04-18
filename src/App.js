@@ -1,57 +1,92 @@
 import React from 'react';
-import InputForm from './Components/InputForm';
-import VisibleContactsHook from './Components/VisibleContactsHook';
+import HomePage from './Components/Pages/HomePage';
+import RegisterPage from './Components/Pages/RegisterPage';
+import LoginPage from './Components/Pages/LoginPage';
+import { Switch, Route, NavLink } from 'react-router-dom';
+import UserMenu from './Components/UserMenu';
+import LoginBar from './Components/LoginBar';
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
+import ContactList from './Components/Pages/ContactList';
+import authSelector from './redux/auth/auth-selector';
+import authOperation from './redux/auth/auth-operation';
+import { useEffect } from 'react';
 
-const App = ({ value, onGetContact }) => {
-  // state = {
-  //   contacts: [],
-  // };
+const useStyles = makeStyles(theme => ({
+  root: {
+    marginLeft: 'auto',
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  '& > * + *': {
+    marginLeft: theme.spacing(2),
+  },
+  home: {
+    backgroundColor: 'blue',
+    marginRight: 20,
+  },
+}));
 
-  // const formSubmitHandler = data => {
-  //
-  //   return newContact;
-  // };
-  // const { contacts } = this.state;
-  // if (contacts.find(contact => contact.name === newContact.name)) {
-  //   return alert('такой контакт существует');
-  // }
+const App = ({ isAuth, onGetUser }) => {
+  const classes = useStyles();
 
-  //   this.setState(prevState => {
-  //     return { contacts: [newContact, ...prevState.contacts] };
-  //   });
-  // };
+  useEffect(() => {
+    onGetUser();
+    // eslint-disable-next-line
+  }, []);
 
-  // deleteContact = contactId => {
-  //   this.setState(prevState => ({
-  //     contacts: prevState.contacts.filter(contact => contact.id !== contactId),
-  //   }));
-  // };
-  // componentDidMount() {
-  //   let getContacts = [];
-
-  //   getContacts = JSON.parse(localStorage.getItem('Contacts'));
-
-  //   if (getContacts === null) {
-  //     getContacts = [];
-  //   }
-
-  //   this.setState({
-  //     contacts: getContacts,
-  //   });
-  // }
-  // componentDidUpdate() {
-  //   localStorage.setItem('Contacts', JSON.stringify(this.state.contacts));
-  // }
-
-  // const data = this.state.contacts;
   return (
-    <div className="App">
-      <h2>Phonebook</h2>
-      <InputForm />
-      <VisibleContactsHook />
-    </div>
-    //  deleteContact={this.deleteContact}
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <NavLink exact to="/" className={classes.link}>
+            <Button
+              className={classes.home}
+              variant="contained"
+              color="secondary"
+            >
+              Home
+            </Button>
+          </NavLink>
+          <NavLink exact to="/contacts" className={classes.link}>
+            <Button
+              className={classes.home}
+              variant="contained"
+              color="secondary"
+            >
+              Contacts
+            </Button>
+          </NavLink>
+
+          {isAuth ? <UserMenu /> : <LoginBar />}
+        </Toolbar>
+      </AppBar>
+
+      <Switch>
+        <Route exact path="/" component={HomePage} />
+        <Route exact path="/contacts" component={ContactList} />
+        <Route path="/register" component={RegisterPage} />
+        <Route path="/login" component={LoginPage} />
+      </Switch>
+    </>
   );
 };
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuth: authSelector.getAuth(state),
+  };
+};
+
+const mapDispatchToProps = {
+  onGetUser: authOperation.getUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

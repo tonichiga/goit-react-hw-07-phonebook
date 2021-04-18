@@ -1,4 +1,4 @@
-import s from './VisibileContactsComponent.module.scss';
+import s from './ContactElement.module.scss';
 
 const ContactElement = ({ name, number, deleteContact, id }) => {
   return (

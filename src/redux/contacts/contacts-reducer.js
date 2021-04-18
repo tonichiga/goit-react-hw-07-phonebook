@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import { createReducer } from '@reduxjs/toolkit';
-import action from './contacts-action';
 import newActions from './contacts-action';
 
 // const initialState = [
@@ -20,10 +19,36 @@ const contacts = createReducer([], {
   [newActions.getContactsSuccess]: (state, action) => action.payload,
 });
 
-export default combineReducers({
-  contacts,
+const loading = createReducer(false, {
+  [newActions.axiosAddContacts]: () => true,
+  [newActions.addContactsSuccess]: () => false,
+  [newActions.errorContacts]: () => false,
+
+  [newActions.axiosDeleteContacts]: () => true,
+  [newActions.deleteContactsSuccess]: () => false,
+  [newActions.errorGetContacts]: () => false,
+
+  [newActions.axiosGetContacts]: () => true,
+  [newActions.getContactsSuccess]: () => false,
+  [newActions.errorGetContacts]: () => false,
 });
 
-// axiosDeleteContacts,
-// deleteContactsSuccess,
-// errorDeleteContacts,
+const filter = createReducer('', {
+  [newActions.filterContacts]: (_, { payload }) => payload,
+});
+
+const createUser = createReducer(
+  {},
+  {
+    [newActions.createUser]: (_, { payload }) => payload,
+  },
+);
+
+const contactReducers = combineReducers({
+  contacts,
+  loading,
+  filter,
+  createUser,
+});
+
+export default contactReducers;

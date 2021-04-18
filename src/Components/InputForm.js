@@ -1,7 +1,6 @@
-import s from './ButtonAddContact.module.scss';
+import s from './styles/utils/ButtonAddContact.module.scss';
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import action from '../redux/contacts/contacts-action';
 import axiosAddContact from '../redux/contacts/contacts-operation';
 
 class InputForm extends Component {
@@ -9,6 +8,8 @@ class InputForm extends Component {
     name: '',
     number: '',
   };
+
+  // console.log("hello");
 
   handleChange = e => {
     const { name, value } = e.target;
