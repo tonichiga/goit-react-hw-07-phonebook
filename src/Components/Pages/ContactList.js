@@ -7,17 +7,7 @@ import { getData, changeFilter } from '../../redux/contacts/contacts-selector';
 import InputForm from '../InputForm';
 import { getLoading } from '../../redux/contacts/contacts-selector';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-import Loader from 'react-loader-spinner';
-import { createUseStyles } from 'react-jss';
-
-const useStyles = createUseStyles(() => ({
-  loader: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%,-50%)',
-  },
-}));
+import Spinner from '../Spinner';
 
 const VisibleContactsHook = ({
   data,
@@ -27,8 +17,6 @@ const VisibleContactsHook = ({
   filtered,
   isLoading,
 }) => {
-  const classes = useStyles();
-
   const contacts = data.contacts.contacts;
 
   const filterContact = contacts.filter(contact => filtered === contact.name);
@@ -44,15 +32,7 @@ const VisibleContactsHook = ({
 
   return (
     <>
-      {isLoading && (
-        <Loader
-          className={classes.loader}
-          type="Rings"
-          color="red"
-          height={100}
-          width={100}
-        />
-      )}
+      {isLoading && <Spinner />}
       <h1>Это главная страница Phonebook</h1>
 
       <InputForm />
